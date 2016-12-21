@@ -2,7 +2,7 @@ var express = require("express"),
     app = express(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
-    API = require("./server/controllers/userAPI.js"),
+    userAPI = require("./server/controllers/userAPI.js"),
     ProductAPI = require("./server/controllers/productAPI.js"),
     cartAPI = require("./server/controllers/cartAPI.js"),
     orderAPI = require("./server/controllers/orderAPI.js");
@@ -18,8 +18,9 @@ app.get('/',function(req,res){
 
 app.use("/js",express.static(__dirname+'/client/js'));
 
-app.post('/api/createUser',API.createUser);
-app.get('/api/listOfUser',API.listOfUser);
+app.post('/api/createUser',userAPI.createUser);
+app.post('/api/getLogin',userAPI.loginToApp);
+app.get('/api/listOfUser',userAPI.listOfUser);
 
 app.post('/api/placeOrder',ProductAPI.addProducts);
 app.get('/api/getAllProducts',ProductAPI.getAllProducts);

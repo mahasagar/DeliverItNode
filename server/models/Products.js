@@ -11,6 +11,7 @@ module.exports = mongoose.model('Products',{
         name: {type: String}
     },
     name : {type: String},
+    productImgUrl : {type: String},
     packSize : {type: String},
     packType: {type: String},
     distributorPrice :  {type: String},
