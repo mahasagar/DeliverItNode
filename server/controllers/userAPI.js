@@ -4,22 +4,38 @@
 var User = require('../models/User');
 var Messages = require('../Utilities/messages');
 
-
 function createUserAPI(req,res){
-    var createUser = new User(req.body);
     var checkUsername = {
-        'username' : req.body.auth.username
+        'username' : req.body.username
     }
     getUserByUsername(checkUsername,function(userExistsRes){
+
         if(userExistsRes.result == false) {
+            var newUser = {
+                 name: req.body.name,
+                 auth : {
+                    username: req.body.username,
+                    password: req.body.password
+                 },
+                 email : req.body.username,
+                 address :{
+                     fullAddress : req.body.address
+                 },
+                 placeType :  "Retailer",
+                 status : "user",
+                 contactNumbers : {
+                     mobile : req.body.mobile
+                  }
+                };
+           var createUser = new User(newUser);
             createUser.save(function (err, result) {
-                res.json({result : result});
+                res.json({result : result,status : true});
             });
         }else{
+            userExistsRes.status =false;
             res.json(userExistsRes);
         }
     });
-
 }
 
 function getUserByUsername(req,res){
@@ -28,9 +44,9 @@ function getUserByUsername(req,res){
     };
     User.findOne(loginDetail,function(req,results){
         if(results !== null) {
-            res({result :Messages.usernameExists});
+            res({result :Messages.usernameExists,status : true});
         }else{
-            res({result :false});
+            res({result :false,status : false});
         }
     })
 }
@@ -42,18 +58,19 @@ function loginToApp(req,res){
     };
     User.findOne(loginDetail,function(req,results){
         if(results !== null) {
-            res.json({result :results});
+            res.json({result :results,status : true});
         }else{
-            res.json({result : Messages.userOrPasswordWrong});
+            res.json({result : Messages.userOrPasswordWrong,status : false});
         }
     })
 }
 
 function listOfUserAPI(req,res){
     User.find({},function(req,results){
-        res.json({result : results});
+        res.json({result : results,status : true});
     })
 };
+
 
 module.exports.createUser = createUserAPI;
 module.exports.listOfUser = listOfUserAPI;

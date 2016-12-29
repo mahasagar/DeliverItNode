@@ -15,7 +15,7 @@ module.exports = mongoose.model('User',{
         lat : {type: String},
         long : {type: String}
     },
-    placeType : {type: String},
+    placeType : {type: String ,default: "Retailer"},
     status : {type: String},
     contactNumbers : {
         mobile : {type: String},
