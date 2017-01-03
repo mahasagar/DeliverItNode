@@ -23,9 +23,8 @@ app.post('/api/getLogin',userAPI.loginToApp);
 app.get('/api/listOfUser',userAPI.listOfUser);
 
 
-
 app.post('/api/placeOrder',ProductAPI.addProducts);
-app.get('/api/getAllProducts',ProductAPI.getAllProducts);
+app.post('/api/getAllProducts',ProductAPI.getAllProducts);
 
 app.post('/api/addToCartAPI',cartAPI.addToCartAPI);
 app.post('/api/getCartDetails',cartAPI.getCartDetails);

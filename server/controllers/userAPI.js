@@ -71,7 +71,6 @@ function listOfUserAPI(req,res){
     })
 };
 
-
 module.exports.createUser = createUserAPI;
 module.exports.listOfUser = listOfUserAPI;
 module.exports.loginToApp = loginToApp;
