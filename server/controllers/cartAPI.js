@@ -6,7 +6,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 function addToCartAPI(req,res){
     var cart = new Cart(req.body);
-
+    var isInCart =false;
     var cartItem = {
         name: req.body.name,
         brand: req.body.brand,
@@ -26,15 +26,33 @@ function addToCartAPI(req,res){
             console.log("req.body.businessId : "+req.body.businessId)
             console.log("req.body.productId : "+req.body.productId)
             console.log("req.body.distributorId : "+req.body.distributorId)
-            var query = {$and:
-                [ {businessId: new ObjectId(req.body.businessId)},
-                  {"items.productId":req.body.productId},
-                  {"items.distributorId":req.body.distributorId}
-               ]
+            var query = {businessId: new ObjectId(req.body.businessId),
+                  "items.productId" : new ObjectId(req.body.productId),
+                  "items.distributorId" : new ObjectId(req.body.distributorId)
             };
-            Cart.find(query,
-                function(err,carts){
 
+            for(var i =0 ;i< cart.items.length;i++ ){
+                if(cart.items[i].distributorId == req.body.distributorId &&
+                    cart.items[i].productId == req.body.productId  ){
+                    isInCart = true;
+                    break;
+                }else{
+                    isInCart = false;
+                }
+            }
+
+            if(isInCart == false){
+                cart.items.push(cartItem);
+                cart.save();
+                formatCartResponse(cart,function(formatedCart){
+                    console.log("res "+JSON.stringify(formatedCart));
+                    res.json({result : formatedCart,"status" : true});
+                })
+            }else{
+                res.json({result : "Product Already in Cart","status" : false});
+            }
+            /*Cart.find(query,
+                function(err,carts){
                     console.log("cart : "+JSON.stringify(carts))
                     if(carts.length > 0){
                         res.json({result : "Product Already in Cart","status" : false});
@@ -46,7 +64,7 @@ function addToCartAPI(req,res){
                             res.json({result : formatedCart,"status" : true});
                         })
                     }
-            });
+            });*/
 
         } else {
             var cartData = {
@@ -77,13 +95,15 @@ function formatCartResponse(data,res){
         if(cartItems){
             for(var i = 0 ; i < cartItems.length ; i++){
                 var distributorName = '';
+                var distributorId = '';
                 var total = 0;
                 for(var j = 0 ; j < cartItems[i].length ; j++){
+                    distributorId = cartItems[i][j].distributorId;
                     distributorName = cartItems[i][j].distributorName;
                     total = total + parseFloat(cartItems[i][j].total);
                 }
                 total = parseFloat(total).toFixed(2);
-                cartsData.push({distributorName : distributorName, total : total , items : cartItems[i]});
+                cartsData.push({distributorName : distributorName,distributorId : distributorId, total : total , items : cartItems[i]});
             }
 
             res(cartsData)
