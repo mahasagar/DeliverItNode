@@ -15,14 +15,13 @@ module.exports = mongoose.model('Cart',{
             form: {type: String},
             packSize: {type: String},
             packType: {type: String},
-            quantity: {
-                orderQty : {type: Number,require: true}
-            },
+            orderQty : {type: Number},
+            total : {type: Number},
             unitPrice: {type: Number},
             MRP: {type: Number},
             productId : {type: mongoose.Schema.Types.ObjectId, require: true},
-            supplierId : {type: mongoose.Schema.Types.ObjectId},
-            supplierName : {type: String},
+            distributorId : {type: mongoose.Schema.Types.ObjectId},
+            distributorName : {type: String},
             attedToCartDate : { type : Date , default : Date.now}
 
         }

@@ -10,7 +10,6 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = mongoose.model('Order',{
     businessId: {type : mongoose.Schema.Types.ObjectId},
-
     orderId : {type: String},
     businessName : {type: String},
     orderStatus: {type: String},
@@ -45,8 +44,8 @@ module.exports = mongoose.model('Order',{
             totalPricePerItem : {type: Number},
             unitPrice: {type: Number},
             productId : {type: mongoose.Schema.Types.ObjectId, require: true},
-            supplierId : {type: mongoose.Schema.Types.ObjectId},
-            supplierName : {type: String},
+            distributorId : {type: mongoose.Schema.Types.ObjectId},
+            distributorName : {type: String},
             attedToCartDate : { type : Date , default : Date.now}
 
         }

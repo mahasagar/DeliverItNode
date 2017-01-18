@@ -56,7 +56,10 @@ function loginToApp(req,res){
         'auth.username' :req.body.username,
         'auth.password' : req.body.password
     };
+    console.log("loginDetail : "+JSON.stringify(loginDetail));
     User.findOne(loginDetail,function(req,results){
+        console.log("req : "+JSON.stringify(req));
+        console.log("results : "+JSON.stringify(results));
         if(results !== null) {
             res.json({result :results,status : true});
         }else{

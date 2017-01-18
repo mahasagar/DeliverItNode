@@ -14,10 +14,11 @@ module.exports = mongoose.model('Products',{
     packSize : {type: String},
     packType: {type: String},
     MRP : {type: Number},
-   
-    distributorId : {type: String},
-    distributorName : {type: String},
-    distributorPrice :  {type: Number},
+    distributors : [{
+        _id : {type: String},
+      distributorName : {type: String},
+      distributorPrice :  {type: Number}
+    }],
     updatedAt : {type: Date},
     createdDate: {type: Date, require: true, default: Date.now}
 });
