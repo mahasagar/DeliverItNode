@@ -106,10 +106,14 @@ function getAllOrders(req,res){
     var query = {
         businessId : req.body.businessId
      };
-    Order.find(query,function(req,results){
+    var queryFinal = Order.find(query);
+    queryFinal.sort('-createdDate');
+    queryFinal.exec(function(err, results) {
+        if (err) throw err;
         res.json(results);
-    })
+    });
 };
+
 function formatCartResponse(data,itemDistributorId,res){
     var cartItems =[];
     if(data && data.items){
